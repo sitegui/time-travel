@@ -127,6 +127,7 @@ commutesScreen.$('.commute-add').onclick = function () {
 			name: name,
 			routes: []
 		})
+		saveData()
 		commutesScreen.refresh()
 	}
 }
@@ -168,6 +169,7 @@ routesScreen.$('.route-add').onclick = function () {
 			medianTime: 0,
 			samples: []
 		})
+		saveData()
 		routesScreen.refresh()
 	}
 }

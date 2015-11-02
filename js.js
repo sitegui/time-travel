@@ -196,6 +196,50 @@ routeScreen.$('.start-timer').onclick = function () {
 var timerScreen = new Screen('screen-timer')
 
 /**
+ * @param {Data~Route} route
+ */
+timerScreen.onshow = function (route) {
+	this.startDate = new Date
+	clearInterval(this.interval)
+	this.interval = setInterval(this.update.bind(this), 900)
+	this.update()
+}
+
+timerScreen.onhide = function () {
+	clearInterval(this.interval)
+}
+
+timerScreen.update = function () {
+	var dt = Date.now() - this.startDate.getTime(),
+		s = Math.floor(dt / 1e3),
+		min = Math.floor(dt / 60e3)
+	s %= 60
+	this.$('.time-minutes').textContent = min < 10 ? '0' + min : min
+	this.$('.time-seconds').textContent = s < 10 ? '0' + s : s
+}
+
+timerScreen.$('.stop-timer').onclick = function () {
+	var endDate = new Date
+	this.data.samples.push({
+		startDate: this.startDate.toISOString(),
+		endDate: endDate.toISOString(),
+		time: endDate.getTime() - this.startDate.getTime()
+	})
+
+	var times = this.data.samples.map(function (s) {
+		return s.time
+	}).sort(function (a, b) {
+		return a - b
+	})
+	this.data.medianTime = times[times.length >> 1]
+	window.history.back()
+}
+
+timerScreen.$('.cancel-timer').onclick = function () {
+	window.history.back()
+}
+
+/**
  * @param {number} time
  * @returns {string}
  */

@@ -1,6 +1,7 @@
 footer {
 	text-align: right;
 	font-size: smaller;
+	margin: 10px;
 }
 
 
@@ -58,4 +59,49 @@ footer {
 
 .start-timer:hover {
 	font-weight: bold;
+}
+
+
+/* Timer screen */
+
+.stop-timer {
+	text-transform: uppercase;
+	text-align: center;
+	border: thin #2B2 solid;
+	background-color: #3C3;
+	padding: 10px;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.cancel-timer {
+	display: inline-block;
+	text-align: center;
+	border: thin #E55 solid;
+	background-color: #F66;
+	padding: 5px;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.cancel-timer-container {
+	text-align: right;
+}
+
+.stop-timer:hover,
+.cancel-timer:hover {
+	font-weight: bold;
+}
+
+.time {
+	font-family: monospace;
+	font-size: xx-large;
+	text-align: center;
+	font-weight: bold;
+	padding: 10px;
+}
+
+.time-seconds {
+	font-size: smaller;
+	color: #333;
 }

@@ -39,17 +39,15 @@ Screen.current = null
  * Display a screen
  * @param {string} id
  * @param {?*} data
- * @param {boolean} [replaceState=false]
+ * @param {boolean} [dontPushState=false]
  */
-Screen.display = function (id, data, replaceState) {
+Screen.display = function (id, data, dontPushState) {
 	var screen = Screen.screens[id],
 		state = {
 			id: id,
 			data: data
 		}
-	if (replaceState) {
-		window.history.replaceState(state, '', '')
-	} else {
+	if (!dontPushState) {
 		window.history.pushState(state, '', '')
 	}
 	if (Screen.current) {
@@ -83,6 +81,9 @@ Screen.prototype.hide = function () {
 /**
  */
 Screen.prototype.refresh = function () {
+	if (this.onhide) {
+		this.onhide()
+	}
 	if (this.onshow) {
 		this.onshow(this.data)
 	}
@@ -94,4 +95,10 @@ Screen.prototype.refresh = function () {
  */
 Screen.prototype.$ = function (selector) {
 	return this.el.querySelector(selector)
+}
+
+window.onpopstate = function (event) {
+	var state = event.state
+	console.log(state)
+	Screen.display(state.id, state.data, true)
 }

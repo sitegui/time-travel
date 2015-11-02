@@ -1,0 +1,21 @@
+footer {
+	text-align: right;
+	font-size: smaller;
+}
+
+.commute,
+.commute-add {
+	border-bottom: thin grey solid;
+	padding: 10px;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.commute:hover,
+.commute-add:hover {
+	font-weight: bold;
+}
+
+.commute-add {
+	text-align: right;
+}

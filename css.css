@@ -42,3 +42,20 @@ footer {
 .route-add {
 	text-align: right;
 }
+
+
+/* Route screen */
+
+.start-timer {
+	text-transform: uppercase;
+	text-align: center;
+	border: thin #EB2 solid;
+	background-color: #FC3;
+	padding: 10px;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.start-timer:hover {
+	font-weight: bold;
+}

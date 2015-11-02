@@ -150,10 +150,15 @@ routesScreen.onshow = function (commute) {
 			time: formatTime(route.medianTime)
 		})
 		routeEl.querySelector('div').onclick = function () {
-			Screen.display('screen-route', route)
+			Screen.display('screen-route', {
+				commute: commute,
+				route: route
+			})
 		}
 		routesEl.appendChild(routeEl)
 	})
+
+	this.$('.commute-name').textContent = commute.name
 }
 routesScreen.$('.route-add').onclick = function () {
 	var name = window.prompt('Route name')
@@ -171,6 +176,19 @@ routesScreen.$('.route-add').onclick = function () {
  * @var {Screen}
  */
 var routeScreen = new Screen('screen-route')
+
+/**
+ * @param {Object} data
+ * @param {Data~Commute} data.commute
+ * @param {Data~Route} data.route
+ */
+routeScreen.onshow = function (data) {
+	this.$('.commute-name').textContent = data.commute.name
+	this.$('.route-name').textContent = data.route.name
+}
+routeScreen.$('.start-timer').onclick = function () {
+	Screen.display('screen-timer', routeScreen.data.route)
+}
 
 /**
  * @var {Screen}

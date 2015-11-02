@@ -187,7 +187,7 @@ routeScreen.onshow = function (data) {
 	this.$('.route-name').textContent = data.route.name
 }
 routeScreen.$('.start-timer').onclick = function () {
-	Screen.display('screen-timer', routeScreen.data.route)
+	Screen.display('screen-timer', routeScreen.data, 'replace')
 }
 
 /**
@@ -196,9 +196,11 @@ routeScreen.$('.start-timer').onclick = function () {
 var timerScreen = new Screen('screen-timer')
 
 /**
- * @param {Data~Route} route
+ * @param {Object} data
+ * @param {Data~Commute} data.commute
+ * @param {Data~Route} data.route
  */
-timerScreen.onshow = function (route) {
+timerScreen.onshow = function () {
 	this.startDate = new Date
 	clearInterval(this.interval)
 	this.interval = setInterval(this.update.bind(this), 900)
@@ -220,23 +222,24 @@ timerScreen.update = function () {
 
 timerScreen.$('.stop-timer').onclick = function () {
 	var endDate = new Date
-	this.data.samples.push({
-		startDate: this.startDate.toISOString(),
+	timerScreen.data.route.samples.push({
+		startDate: timerScreen.startDate.toISOString(),
 		endDate: endDate.toISOString(),
-		time: endDate.getTime() - this.startDate.getTime()
+		time: endDate.getTime() - timerScreen.startDate.getTime()
 	})
 
-	var times = this.data.samples.map(function (s) {
+	var times = timerScreen.data.route.samples.map(function (s) {
 		return s.time
 	}).sort(function (a, b) {
 		return a - b
 	})
-	this.data.medianTime = times[times.length >> 1]
-	window.history.back()
+	timerScreen.data.route.medianTime = times[times.length >> 1]
+	saveData()
+	Screen.display('screen-route', timerScreen.data, 'replace')
 }
 
 timerScreen.$('.cancel-timer').onclick = function () {
-	window.history.back()
+	Screen.display('screen-route', timerScreen.data, 'replace')
 }
 
 /**

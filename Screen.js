@@ -39,15 +39,17 @@ Screen.current = null
  * Display a screen
  * @param {string} id
  * @param {?*} data
- * @param {boolean} [dontPushState=false]
+ * @param {string} [pushType='push'] - either 'push', 'replace' or 'none'
  */
-Screen.display = function (id, data, dontPushState) {
+Screen.display = function (id, data, pushType) {
 	var screen = Screen.screens[id],
 		state = {
 			id: id,
 			data: data
 		}
-	if (!dontPushState) {
+	if (pushType === 'replace') {
+		window.history.replaceState(state, '', '')
+	} else if (pushType !== 'none') {
 		window.history.pushState(state, '', '')
 	}
 	if (Screen.current) {
@@ -99,6 +101,7 @@ Screen.prototype.$ = function (selector) {
 
 window.onpopstate = function (event) {
 	var state = event.state
-	console.log(state)
-	Screen.display(state.id, state.data, true)
+	if (state) {
+		Screen.display(state.id, state.data, 'none')
+	}
 }

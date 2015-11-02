@@ -113,6 +113,9 @@ commutesScreen.onshow = function () {
 		var commuteEl = fillTemplate('commute', {
 			name: commute.name
 		})
+		commuteEl.querySelector('div').onclick = function () {
+			Screen.display('screen-routes', commute)
+		}
 		commutesEl.appendChild(commuteEl)
 	})
 }
@@ -124,7 +127,7 @@ commutesScreen.$('.commute-add').onclick = function () {
 			name: name,
 			routes: []
 		})
-		commutesScreen.show()
+		commutesScreen.refresh()
 	}
 }
 
@@ -132,6 +135,37 @@ commutesScreen.$('.commute-add').onclick = function () {
  * @var {Screen}
  */
 var routesScreen = new Screen('screen-routes')
+
+/**
+ * @param {Data~Commute} commute
+ */
+routesScreen.onshow = function (commute) {
+	var routesEl = this.$('#routes')
+	routesEl.innerHTML = ''
+	commute.routes.sort(function (a, b) {
+		return a.medianTime - b.medianTime
+	}).forEach(function (route) {
+		var routeEl = fillTemplate('route', {
+			name: route.name,
+			time: formatTime(route.medianTime)
+		})
+		routeEl.querySelector('div').onclick = function () {
+			Screen.display('screen-route', route)
+		}
+		routesEl.appendChild(routeEl)
+	})
+}
+routesScreen.$('.route-add').onclick = function () {
+	var name = window.prompt('Route name')
+	if (name) {
+		routesScreen.data.routes.push({
+			name: name,
+			medianTime: 0,
+			samples: []
+		})
+		routesScreen.refresh()
+	}
+}
 
 /**
  * @var {Screen}
@@ -142,3 +176,18 @@ var routeScreen = new Screen('screen-route')
  * @var {Screen}
  */
 var timerScreen = new Screen('screen-timer')
+
+/**
+ * @param {number} time
+ * @returns {string}
+ */
+function formatTime(time) {
+	var s = Math.floor(time / 1e3),
+		min = Math.floor(time / 60e3),
+		h = Math.floor(time / 3600e3)
+	s %= 60
+	min %= 60
+	s = s < 10 ? '0' + s : String(s)
+	min = min < 10 ? '0' + min : String(min)
+	return (h ? h + ':' : '') + min + ':' + s
+}

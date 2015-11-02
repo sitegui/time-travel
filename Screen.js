@@ -17,6 +17,9 @@ function Screen(id) {
 	/** @member {function()} */
 	this.onhide = null
 
+	/** @member {?*} */
+	this.data = null
+
 	this.el.style.display = 'none'
 	Screen.screens[id] = this
 }
@@ -35,7 +38,7 @@ Screen.current = null
 /**
  * Display a screen
  * @param {string} id
- * @param {Object} data
+ * @param {?*} data
  * @param {boolean} [replaceState=false]
  */
 Screen.display = function (id, data, replaceState) {
@@ -57,10 +60,11 @@ Screen.display = function (id, data, replaceState) {
 }
 
 /**
- * @param {Object} data
+ * @param {?*} data
  */
 Screen.prototype.show = function (data) {
 	this.el.style.display = ''
+	this.data = data
 	if (this.onshow) {
 		this.onshow(data)
 	}
@@ -72,6 +76,15 @@ Screen.prototype.hide = function () {
 	this.el.style.display = 'none'
 	if (this.onhide) {
 		this.onhide()
+	}
+	this.data = null
+}
+
+/**
+ */
+Screen.prototype.refresh = function () {
+	if (this.onshow) {
+		this.onshow(this.data)
 	}
 }
 

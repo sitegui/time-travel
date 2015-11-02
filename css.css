@@ -3,6 +3,9 @@ footer {
 	font-size: smaller;
 }
 
+
+/* Commutes screen */
+
 .commute,
 .commute-add {
 	border-bottom: thin grey solid;
@@ -17,5 +20,25 @@ footer {
 }
 
 .commute-add {
+	text-align: right;
+}
+
+
+/* Routes screen */
+
+.route,
+.route-add {
+	border-bottom: thin grey solid;
+	padding: 10px;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.route:hover,
+.route-add:hover {
+	font-weight: bold;
+}
+
+.route-add {
 	text-align: right;
 }
